@@ -1,6 +1,6 @@
 # Streamlit: Practical Introduction to ML Project Sharing
 
-Welcome to this repository! 🎉 Here, you'll find an introduction to [Streamlit](https://streamlit.io/), an easy-to-use, open-source app framework for Machine Learning and Data Science enthusiasts. This project is part of the Data Science and Research (DSR) course, and includes all the necessary instructions and datasets to create and deploy a Streamlit app, featuring visualizations and ML-based predictions. After attending this class, you will know how to easily transform your data and ML models into interactive web apps that anyone can explore.
+Welcome to this repository! 🎉 Here, you'll find an introduction to [Streamlit](https://streamlit.io/), an easy-to-use, open-source app framework for Machine Learning and Data Science enthusiasts. This project is part of the Data Science Retreat (DSR) course, and includes all the necessary instructions and datasets to create and deploy a Streamlit app, featuring visualizations and ML-based predictions. After attending this class, you will know how to easily transform your data and ML models into interactive web apps that anyone can explore.
 
 ## Overview
 
