@@ -26,27 +26,13 @@ This is perfect for those who want to go beyond static notebooks and bring their
 
 ## Getting Started
 
-During this class, you will create an app in your own GitHub repository, deploy it to Streamlit Cloud, and make it accessible to others. To run the app locally after creation in your own repo, follow these steps:
+During this class, you will create an app in your own GitHub repository, deploy it to Streamlit Cloud, and make it accessible to others. Main magic command:
 
-1. **Clone the repository**:
-
-   ```bash
-   git clone https://github.com/your_username/streamlit-ml-project.git
-   ```
-
-2. **Install the dependencies**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Run the Streamlit app**:
+**Run the Streamlit app**:
 
    ```bash
    streamlit run app.py
    ```
-
-This will start a local server, and you can open your browser to see the interactive app in action.
 
 ## Why Streamlit?
 
