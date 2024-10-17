@@ -15,6 +15,7 @@ This is perfect for those who want to go beyond static notebooks and bring their
 ## Agenda during class
 - Short introduction of Streamlit
 - First examples (streamlit hello)
+- Demo the App we want to build together until end of day
 - Step by step follow the tasks in 2410_streamlit_pracitcal.ipynb
 
 ## Features
