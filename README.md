@@ -12,6 +12,11 @@ This repository is dedicated to helping you understand how to use **Streamlit** 
 
 This is perfect for those who want to go beyond static notebooks and bring their ML work to life in a way that others can easily use and understand.
 
+## Agenda
+- Short introduction of Streamlit
+- First examples (streamlit hello)
+- Step by step follow the tasks in 2410_streamlit_pracitcal.ipynb
+
 ## Features
 
 - **Easy Setup**: Learn how to set up Streamlit in just a few steps.
