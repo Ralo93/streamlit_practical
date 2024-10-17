@@ -54,7 +54,26 @@ The example app we will build during this class allows you to:
 - **Interact with Models**: Adjust inference values and see how model predictions change in real time.
 - **Visualize Insights**: Display data insights with dynamic charts and metrics.
 
-##
+## How to Deploy on Streamlit Cloud
+
+Deploying your Streamlit app to Streamlit Cloud is straightforward and allows you to share your app with the world instantly. Follow these steps:
+
+1. **Push Your Code to GitHub**: Make sure all your app code is pushed to a public GitHub repository.
+
+2. **Create an Account on Streamlit Cloud**: Go to [Streamlit Cloud](https://streamlit.io/cloud) and create an account if you haven't done so already.
+
+3. **Deploy the App**:
+   - Click on **'New App'** on your Streamlit Cloud dashboard.
+   - Connect your GitHub account and select the repository containing your Streamlit app.
+   - Choose the branch (e.g., `main`) and specify the entry point file (e.g., `app.py`).
+
+4. **Click Deploy**: Once you have selected the appropriate settings, click **'Deploy'**. Your app will be deployed, and you'll receive a shareable link.
+
+5. **Share Your App**: Once deployed, you can share the URL with others, allowing them to interact with your ML models directly through their browser.
+
+
+
+
 
 
 
