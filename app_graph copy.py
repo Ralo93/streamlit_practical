@@ -11,11 +11,13 @@ st.title("Blues Chord Progression Network")
 st.write("Explore chord progressions and transitions commonly used in Blues. Filter by specific chords to see direct relationships.")
 
 
-# Function to read image and return as base64
+# Function to read image and return as base64, return None if image doesn't exist
 def get_image_as_base64(image_path):
-    with open(image_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode('utf-8')
-
+    if os.path.exists(image_path):
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode('utf-8')
+    else:
+        return None
 
 def create_chord_network(selected_chord=None, show_neighbors_only=False):
     # Create network with physics
@@ -501,11 +503,11 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
                 "x": false,
                 "y": false
             },
-            "physics": true
+            "physics": false
         },
         "edges": {
             "font": {
-                "size": 8,
+                "size": 100,
                 "strokeWidth": 0,
                 "color": "white"
             },
@@ -526,10 +528,10 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
             "barnesHut": {
                 "gravitationalConstant": -2000,
                 "centralGravity": 0.1,
-                "springLength": 200,
+                "springLength": 400,
                 "springConstant": 0.01,
                 "damping": 0.09,
-                "avoidOverlap": 0.1
+                "avoidOverlap": 1
             },
             "minVelocity": 0.75,
             "maxVelocity": 30
@@ -591,6 +593,21 @@ st.sidebar.markdown("""
 <span style='color:#FF5722;'>**Substitution**</span>: Substitution lets you use different chords while still keeping the same harmonic direction or feeling.
 """, unsafe_allow_html=True)
 
+# Define available images for chords dynamically
+image_paths = {
+    'Am7': r"C:\Users\rapha\repositories\streamlit_practical\images\Am7.png",
+    'B7': r"C:\Users\rapha\repositories\streamlit_practical\images\B7.png",
+    'C': r"C:\Users\rapha\repositories\streamlit_practical\images\C.png",
+    'C7': r"C:\Users\rapha\repositories\streamlit_practical\images\C7.png",
+    'Cdim': r"C:\Users\rapha\repositories\streamlit_practical\images\Cdim.png",
+    'Cm7': r"C:\Users\rapha\repositories\streamlit_practical\images\Cm7.png",
+    'F7': r"C:\Users\rapha\repositories\streamlit_practical\images\F7.png",
+    'G7': r"C:\Users\rapha\repositories\streamlit_practical\images\G7.png"
+}
+
+# Load images dynamically
+images = {chord: get_image_as_base64(path) for chord, path in image_paths.items() if get_image_as_base64(path)}
+
 Am7 = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\Am7.png")
 B7 = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\B7.png")
 C = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\C.png")
@@ -612,40 +629,20 @@ Cm7 = f"data:image/png;base64,{Cm7}"
 F7 = f"data:image/png;base64,{F7}"
 G7 = f"data:image/png;base64,{G7}"
 
+# Display images dynamically if they exist
+st.write("### Chords shown in the filtered Graph:")
+image_elements = []
+for chord, img in images.items():
+    if img:
+        img_html = f"<figure style='text-align: center;'><img src='data:image/png;base64,{img}' width='130' height='150'></figure>"
+        image_elements.append(img_html)
 
-# Display images side by side using CSS flexbox
-st.markdown(f"""
-    <div style="display: flex; justify-content: space-around;">
-        <figure style="text-align: center;">
-            <img src='{Am7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{C}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{C7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{Cdim}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{Cm7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{F7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{G7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-    </div>
-""", unsafe_allow_html=True)
+# Display images side by side
+if image_elements:
+    st.markdown(f"<div style='display: flex; justify-content: space-around;'>{''.join(image_elements)}</div>", unsafe_allow_html=True)
+else:
+    st.write("No images to display for the selected chord(s).")
+
 
 # Create and display network
 net = create_chord_network(
@@ -688,8 +685,6 @@ with open("chord_network.html", "a") as f:
     """
     f.write(custom_js)
 
-# Add legend with more detailed explanations
-st.write("### Chord Types Legend")
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     st.markdown("🟢 **Major**: Root chords")

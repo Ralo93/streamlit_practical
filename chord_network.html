@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#FF9800", "font": {"color": "white"}, "id": "Am7", "label": "Am7", "shape": "dot", "title": "Am7 (Minor 7th)\n\nRelated chords:\n\u2192 Cmaj7: Relative major\n\u2192 E7: Dominant resolution\n\u2192 G7: Fifth dominant\n\u2192 D7: Fourth dominant\n\u2192 Adim: Diminished substitution\n"}, {"color": "#4CAF50", "font": {"color": "white"}, "id": "A", "label": "A", "shape": "dot", "title": "A (Major)\n\nRelated chords:\n\u2192 A7: Dominant extension\n\u2192 D7: Fourth progression\n\u2192 E7: Fifth progression\n\u2192 F#m7: Relative minor\n\u2192 Am7: Minor substitution\n\u2192 Adim: Diminished tension\n"}, {"color": "#9C27B0", "font": {"color": "white"}, "id": "A7", "label": "A7", "shape": "dot", "title": "A7 (Dominant 7th)\n\nRelated chords:\n\u2192 D7: Fourth resolution\n\u2192 E7: Fifth resolution\n\u2192 Am7: Minor substitution\n\u2192 D9: Extended progression\n\u2192 Adim: Diminished tension\n\u2192 A9: Extension base\n"}, {"color": "#9C27B0", "font": {"color": "white"}, "id": "D7", "label": "D7", "shape": "dot", "title": "D7 (Dominant 7th)\n\nRelated chords:\n\u2192 G7: Fourth resolution\n\u2192 A7: Fifth resolution\n\u2192 Dm7: Minor substitution\n\u2192 G9: Extended progression\n\u2192 Ddim: Diminished tension\n\u2192 D9: Extension base\n"}, {"color": "#9C27B0", "font": {"color": "white"}, "id": "E7", "label": "E7", "shape": "dot", "title": "E7 (Dominant 7th)\n\nRelated chords:\n\u2192 A7: Fourth resolution\n\u2192 B7: Fifth resolution\n\u2192 Em7: Minor substitution\n\u2192 A9: Extended progression\n\u2192 Edim: Diminished tension\n\u2192 E9: Extension base\n"}, {"color": "#FFC107", "font": {"color": "white"}, "id": "Adim", "label": "Adim", "shape": "dot", "title": "Adim (Diminished)\n\nRelated chords:\n\u2192 A7: Dominant resolution\n\u2192 D7: Fourth tension\n\u2192 E7: Fifth tension\n\u2192 Am7: Leading tone resolution\n"}, {"color": "#FF9800", "font": {"color": "white"}, "id": "F#m7", "label": "F#m7", "shape": "dot", "title": "F#m7 (Minor 7th)\n\nRelated chords:\n\u2192 A7: Dominant resolution\n\u2192 Dmaj7: Fourth major\n\u2192 E7: Fifth dominant\n\u2192 B7: Secondary dominant\n\u2192 F#dim: Diminished substitution\n"}]);
+                  edges = new vis.DataSet([{"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "Am7", "label": "Dominant resolution", "title": "Dominant resolution", "to": "E7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "Am7", "label": "Fourth dominant", "title": "Fourth dominant", "to": "D7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "Am7", "label": "Diminished substitution", "title": "Diminished substitution", "to": "Adim"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A", "label": "Dominant extension", "title": "Dominant extension", "to": "A7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A", "label": "Fourth progression", "title": "Fourth progression", "to": "D7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A", "label": "Fifth progression", "title": "Fifth progression", "to": "E7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A", "label": "Relative minor", "title": "Relative minor", "to": "F#m7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A", "label": "Minor substitution", "title": "Minor substitution", "to": "Am7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A", "label": "Diminished tension", "title": "Diminished tension", "to": "Adim"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A7", "label": "Fourth resolution", "title": "Fourth resolution", "to": "D7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A7", "label": "Fifth resolution", "title": "Fifth resolution", "to": "E7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A7", "label": "Minor substitution", "title": "Minor substitution", "to": "Am7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "A7", "label": "Diminished tension", "title": "Diminished tension", "to": "Adim"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "Adim", "label": "Fourth tension", "title": "Fourth tension", "to": "D7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "Adim", "label": "Fifth tension", "title": "Fifth tension", "to": "E7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "F#m7", "label": "Dominant resolution", "title": "Dominant resolution", "to": "A7"}, {"arrows": {"to": {"enabled": true, "type": "arrow"}}, "font": {"color": "white", "size": 8}, "from": "F#m7", "label": "Fifth dominant", "title": "Fifth dominant", "to": "E7"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"fixed": {"x": false, "y": false}, "physics": true}, "edges": {"font": {"size": 8, "strokeWidth": 0, "color": "white"}, "smooth": {"type": "continuous", "roundness": 0.5}}, "physics": {"enabled": true, "stabilization": {"enabled": true, "iterations": 100, "updateInterval": 50, "onlyDynamicEdges": false, "fit": true}, "barnesHut": {"gravitationalConstant": -2000, "centralGravity": 0.1, "springLength": 200, "springConstant": 0.01, "damping": 0.09, "avoidOverlap": 0.1}, "minVelocity": 0.75, "maxVelocity": 30}, "interaction": {"dragNodes": true, "dragView": true, "zoomView": true, "navigationButtons": true, "hover": false}, "manipulation": {"enabled": false}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
