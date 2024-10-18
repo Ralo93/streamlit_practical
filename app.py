@@ -8,8 +8,8 @@ st.write("Hello >Again!!!ity of Life and Economic Factors")
 
 st.subheader("""
             This app enables you to explore the music chords!
-
 """)
+
 
 tab1, tab2, tab3 = st.tabs(["one", "two", "Data Explorer"])
 
@@ -36,7 +36,6 @@ with tab3:
 
     st.line_chart(df['GDP'])  # Line chart from a dataframe column
     st.bar_chart(df)  # Bar chart for the entire dataframe
-    
     
     
     # Show the dataframe
