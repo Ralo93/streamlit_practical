@@ -490,7 +490,7 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
                                related_chord, 
                                title=transition,
                                label=transition,
-                               font={'size': 8, 'color': 'white'},
+                               font={'size': 50, 'color': 'white'},
                                arrows={'to': {'enabled': True, 'type': 'arrow'}})
     
 
@@ -498,6 +498,20 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
     # Configure additional network options for better visibility
     net.set_options("""
     const options = {
+                    var selectedChord = '';
+                    const options = {
+                        interaction: {
+                            multiselect: false,
+                            selectConnectedEdges: false
+                        }
+                    };
+                    network.on("doubleClick", function(params) {
+                        if (params.nodes.length > 0) {
+                            selectedChord = params.nodes[0];
+                            // Pass the double-clicked node back to Streamlit
+                            window.location.href = window.location.href.split('?')[0] + '?selected_chord=' + selectedChord;
+                        }
+                    });
         "nodes": {
             "fixed": {
                 "x": false,
@@ -507,7 +521,7 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
         },
         "edges": {
             "font": {
-                "size": 100,
+                "size": 50,
                 "strokeWidth": 0,
                 "color": "white"
             },
@@ -552,6 +566,8 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
     return net
 
 
+# Retrieve selected chord from URL parameters (double-clicked node)
+#selected_chord = st.experimental_get_query_params().get('selected_chord', [None])[0]
 
 # Create sidebar controls
 st.sidebar.header("Filter Controls")
@@ -567,11 +583,8 @@ all_chords = sorted(list(set([chord for chord in ["A", "B", "C", "D", "E", "F", 
                                                   "F#m7", "C#m7"]])))
 
 
-selected_chord = st.sidebar.selectbox(
-    "Select a chord to focus on:",
-    ["None"] + all_chords,
-    help="Choose a specific chord to see its relationships"
-)
+# Retrieve selected chord from URL parameters (double-clicked node)
+selected_chord = st.experimental_get_query_params().get('selected_chord', [None])[0]
 
 show_neighbors = st.sidebar.checkbox(
     "Show only direct transitions",
@@ -684,6 +697,8 @@ with open("chord_network.html", "a") as f:
     </script>
     """
     f.write(custom_js)
+
+
 
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:

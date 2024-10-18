@@ -10,14 +10,13 @@ st.set_page_config(layout="wide")
 st.title("Blues Chord Progression Network")
 st.write("Explore chord progressions and transitions commonly used in Blues. Filter by specific chords to see direct relationships.")
 
-
 # Function to read image and return as base64
 def get_image_as_base64(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode('utf-8')
 
 
-def create_chord_network(selected_chord=None, show_neighbors_only=False):
+def create_chord_network(selected_chord=None, show_neighbors_only=True):
     # Create network with physics
     net = Network(height='600px', width='100%', bgcolor='#222222', font_color='white')
     net.barnes_hut(gravity=-5000, central_gravity=0.3, spring_length=200)
@@ -488,7 +487,7 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
                                related_chord, 
                                title=transition,
                                label=transition,
-                               font={'size': 8, 'color': 'white'},
+                               font={'size': 14, 'color': 'white'},
                                arrows={'to': {'enabled': True, 'type': 'arrow'}})
     
 
@@ -511,7 +510,7 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
             },
             "smooth": {
                 "type": "continuous",
-                "roundness": 0.5
+                "roundness": 0.9
             }
         },
         "physics": {
@@ -529,7 +528,7 @@ def create_chord_network(selected_chord=None, show_neighbors_only=False):
                 "springLength": 200,
                 "springConstant": 0.01,
                 "damping": 0.09,
-                "avoidOverlap": 0.1
+                "avoidOverlap": 1
             },
             "minVelocity": 0.75,
             "maxVelocity": 30
@@ -571,11 +570,11 @@ selected_chord = st.sidebar.selectbox(
     help="Choose a specific chord to see its relationships"
 )
 
-show_neighbors = st.sidebar.checkbox(
-    "Show only direct transitions",
-    value=False,
-    help="When checked, shows only the selected chord and its immediate connections"
-)
+#show_neighbors = st.sidebar.checkbox(
+#    "Show only direct transitions",
+#    value=False,
+#    help="When checked, shows only the selected chord and its immediate connections"
+#)
 
 # Add description
 st.sidebar.markdown("""
@@ -649,8 +648,8 @@ st.markdown(f"""
 
 # Create and display network
 net = create_chord_network(
-    selected_chord if selected_chord != "None" else None,
-    show_neighbors
+    selected_chord if selected_chord != "None" else None#,
+   # show_neighbors
 )
 net.save_graph("chord_network.html")
 
@@ -689,7 +688,7 @@ with open("chord_network.html", "a") as f:
     f.write(custom_js)
 
 # Add legend with more detailed explanations
-st.write("### Chord Types Legend")
+#st.write("### Chord Types Legend")
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     st.markdown("🟢 **Major**: Root chords")
