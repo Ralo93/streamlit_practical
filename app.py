@@ -10,11 +10,6 @@ st.set_page_config(layout="wide")
 st.title("Blues Chord Progression Network")
 st.write("Explore chord progressions and transitions commonly used in Blues. Filter by specific chords to see direct relationships.")
 
-# Function to read image and return as base64
-def get_image_as_base64(image_path):
-    with open(image_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode('utf-8')
-
 
 def create_chord_network(selected_chord=None, show_neighbors_only=True):
     # Create network with physics
@@ -222,62 +217,6 @@ st.sidebar.markdown("""
 <span style='color:#FF5722;'>**Substitution**</span>: Substitution lets you use different chords while still keeping the same harmonic direction or feeling.
 """, unsafe_allow_html=True)
 
-Am7 = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\Am7.png")
-B7 = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\B7.png")
-C = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\C.png")
-C7 = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\C7.png")
-Cdim = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\Cdim.png")
-Cm7 = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\Cm7.png")
-F7 = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\F7.png")
-G7 = get_image_as_base64(r"C:\Users\rapha\repositories\streamlit_practical\images\G7.png")
-
-
-# Verify the image by showing it in Streamlit (proof of loading)
-st.write("### Chords shown in the filtered Graph:")
-Am7 = f"data:image/png;base64,{Am7}"
-B7 = f"data:image/png;base64,{B7}"
-C = f"data:image/png;base64,{C}"
-C7 = f"data:image/png;base64,{C7}"
-Cdim = f"data:image/png;base64,{Cdim}"
-Cm7 = f"data:image/png;base64,{Cm7}"
-F7 = f"data:image/png;base64,{F7}"
-G7 = f"data:image/png;base64,{G7}"
-
-
-# Display images side by side using CSS flexbox
-st.markdown(f"""
-    <div style="display: flex; justify-content: space-around;">
-        <figure style="text-align: center;">
-            <img src='{Am7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{C}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{C7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{Cdim}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{Cm7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{F7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-        <figure style="text-align: center;">
-            <img src='{G7}' width='130' height='150'>
-            <figcaption></figcaption>
-        </figure>
-    </div>
-""", unsafe_allow_html=True)
-
 # Create and display network
 net = create_chord_network(
     selected_chord if selected_chord != "None" else None#,
@@ -285,39 +224,6 @@ net = create_chord_network(
 )
 net.save_graph("chord_network.html")
 
-# Add custom JavaScript to the HTML file for hover image
-with open("chord_network.html", "a") as f:
-    custom_js = """
-    <script type="text/javascript">
-        var network = document.getElementById('mynetwork');
-        var hoverImage = document.createElement('img');
-        hoverImage.id = 'hoverImage';
-        hoverImage.src = 'data:image/png;base64,{img_base64}';
-        hoverImage.style.position = 'absolute';
-        hoverImage.style.display = 'none';
-        hoverImage.style.border = '1px solid black';
-        hoverImage.width = 100;
-        hoverImage.height = 100;
-        document.body.appendChild(hoverImage);
-
-        // Listen for hover event
-        network.addEventListener('mouseover', function(event) {
-            var nodeId = network.getNodeAt(event.pointer.DOM);
-            if (nodeId) {
-                hoverImage.style.display = 'block';
-                hoverImage.style.left = event.pageX + 'px';
-                hoverImage.style.top = event.pageY + 'px';
-            } else {
-                hoverImage.style.display = 'none';
-            }
-        });
-
-        network.addEventListener('mouseout', function(event) {
-            hoverImage.style.display = 'none';
-        });
-    </script>
-    """
-    f.write(custom_js)
 
 # Add legend with more detailed explanations
 #st.write("### Chord Types Legend")
