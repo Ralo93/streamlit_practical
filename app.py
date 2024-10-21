@@ -4,7 +4,7 @@ import os
 import base64
 
 # Set the app to wide mode
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
 # Title and description
 st.title("Blues Chord Progression Network")
@@ -13,69 +13,58 @@ st.write("Explore chord progressions and transitions commonly used in Blues. Fil
 
 def create_chord_network(selected_chord=None, show_neighbors_only=True):
     # Create network with physics
-    net = Network(height='600px', width='100%', bgcolor='#222222', font_color='white')
-    net.barnes_hut(gravity=-5000, central_gravity=0.3, spring_length=200)
+    net = Network(height='1000px', width='100%', bgcolor='#071109', font_color='white')
+    #net.barnes_hut(gravity=-10000, central_gravity=0.4, spring_length=50)
+
     
     chords = {
-        'E': {'type': 'I (Tonic)', 'color': '#4CAF50', 'related': {
-            'A': 'Fourth progression (IV)'}},
-            #'B': 'Fifth progression (V)',
-        'C#m7': {'type': 'Relative Minor', 'color': '#2196F3', 'related': {
-             'E': 'Relative Minor'    
-                 }},
-        'E7': {'type': 'Dominant substitution', 'color': '#9C27B0', 'related': {
-             'E': 'Dominant substitution'
-                 }},
-        'E9': {'type': 'Extended substitution', 'color': '#2196F3', 'related': {
-             'E': 'Extended substitution'
-                 }},
-        'Em7': {'type': 'Minor substitution', 'color': '#FF5722', 'related': {
-             'E': 'Minor substitution'
-                 }},
-        'E6': {'type': 'Sixth substitution', 'color': '#FFC107', 'related': {
-             'E': 'Sixth substitution'
-                 }},
-        'D7': {'type': 'Additional fourth progression', 'color': '#9C27B0', 'related': {
-             'E': 'Additional fourth progression (leading to A)'
-                 }},
+    'FMajor': {'type': 'I (Tonic)', 'color': '#4CAF50', 'related': {
+        #'G': 'Fourth progression (IV in Mixolydian)',
+        'BbMmajor': 'Modal interchange (borrowed from F minor)',
+        #'C': 'Fifth progression (V)',
+        #'C7': 'Dominant seventh resolving to F'
+    }},
+    'G': {'type': 'IV (Subdominant in F Mixolydian)', 'color': '#4CAF50', 'related': {
+        #'F': 'Subdominant return to tonic',
+        #'C': 'Fifth progression in G',
+        'BbMajor': 'Modal interchange from F minor (leading to BbM)',
+    }},
+    'BbMajor': {'type': 'Modal interchange', 'color': '#FF5722', 'related': {
+        'E': 'Neapolitan 6TH',
+        #'C': 'Resolution to dominant',
+    }},
+    'C+': {'type': 'V (Dominant)', 'color': '#4CAF50', 'related': {
+        #'F': 'Resolution to tonic (F)',
+        #'C7': 'Dominant seventh leading back to F',
+        #'AbM': 'Modal interchange leading to C',
+    }},
+    'Cdim': {'type': 'Dominant seventh', 'color': '#FFC107', 'related': {
+        'E': 'Secondary Diminished',
+    
+    }},
+    'Adim': {'type': 'Dominant seventh', 'color': '#9C27B0', 'related': {
+        'F': 'Resolution to tonic (F)',
 
-        'A': {'type': 'IV (Subdominant)', 'color': '#4CAF50', 'related': {
-            'B': 'Fifth progression (V) in terms of E'}},
-            #'E': 'Fifth progression (I)'}},
-        'D': {'type': 'Fourth progression of IV', 'color': '#FFC107', 'related': {
-            'A': 'Fourth progression (IV of IV)'}},
-        'F#m7': {'type': 'Relative minor of A', 'color': '#FF5722', 'related': {
-            'A': 'Relative minor'}},
-        'A7': {'type': 'Dominant substitution of A', 'color': '#9C27B0', 'related': {
-            'A': 'Dominant substitution'}},
-        'A9': {'type': 'Extended substitution of A', 'color': '#2196F3', 'related': {
-            'A': 'Extended substitution'}},
-        'Am7': {'type': 'Minor substitution of A', 'color': '#FF5722', 'related': {
-            'A': 'Minor substitution'}},
-        'A6': {'type': 'Sixth substitution of A', 'color': '#FFC107', 'related': {
-            'A': 'Sixth substitution'}},
-        'B7': {'type': 'Additional fifth progression', 'color': '#9C27B0', 'related': {
-            'A': 'Additional fifth progression (leading to B)'}},
+    }}, 
+    'AbMajor': {'type': 'Modal interchange', 'color': '#FFC107', 'related': {
+        'edge_color': '#FF5722',
+        #'C': 'Resolution to dominant (C)'
+        
+    }},
 
-         'B': {'type': 'V (Dominant)', 'color': '#4CAF50', 'related': {
-            #'E': 'Fourth progression (I)',
-            'A': 'Fourth progression (leading to A)'}},
-        'F#': {'type': 'Fifth of V', 'color': '#FFC107', 'related': {
-            'B': 'Fifth progression (V of V)'}},
-        'G#m7': {'type': 'Relative minor of B', 'color': '#FF5722', 'related': {
-            'B': 'Relative minor'}},
-        'B7': {'type': 'Dominant substitution of B', 'color': '#9C27B0', 'related': {
-            'B': 'Dominant substitution'}},
-        'B9': {'type': 'Extended substitution of B', 'color': '#2196F3', 'related': {
-            'B': 'Extended substitution'}},
-        'Bm7': {'type': 'Minor substitution of B', 'color': '#FF5722', 'related': {
-            'B': 'Minor substitution'}},
-        'B6': {'type': 'Sixth substitution of B', 'color': '#FFC107', 'related': {
-            'B': 'Sixth substitution'}},
-        'A7': {'type': 'Additional fourth progression', 'color': '#9C27B0', 'related': {
-            'B': 'Additional fourth progression (leading to A)'}}
-    }
-
+    'Aminor': {'type': 'Modal interchange', 'color': '#4CAF50', 'related': {
+        'C': 'Resolution to dominant (C)'
+    }}, 
+    'DMinor': {'type': 'Modal interchange', 'color': '#4CAF50', 'related': {
+        'C': 'Resolution to dominant (C)'
+    }},
+    'E7': {'type': 'Modal interchange', 'color': '#4CAF50', 'related': {
+        'C': 'Resolution to dominant (C)'
+    }},
+    'G#°': {'type': 'Modal interchange', 'color': '#4CAF50', 'related': {
+        'C': 'Resolution to dominant (C)'
+    }},
+}
     
     # Filter nodes based on selection
     if selected_chord and show_neighbors_only:
@@ -152,7 +141,7 @@ def create_chord_network(selected_chord=None, show_neighbors_only=True):
             "barnesHut": {
                 "gravitationalConstant": -2000,
                 "centralGravity": 0.1,
-                "springLength": 200,
+                "springLength": 300,
                 "springConstant": 0.01,
                 "damping": 0.09,
                 "avoidOverlap": 1
@@ -164,7 +153,7 @@ def create_chord_network(selected_chord=None, show_neighbors_only=True):
             "dragNodes": true,
             "dragView": true,
             "zoomView": true,
-            "navigationButtons": true,
+            "navigationButtons": false,
             "hover": false
         },
         "manipulation": {
@@ -174,7 +163,6 @@ def create_chord_network(selected_chord=None, show_neighbors_only=True):
     """)
     
     return net
-
 
 
 # Create sidebar controls
@@ -242,7 +230,7 @@ with col5:
 
 # Save and display the network
 net.save_graph("chord_network.html")
-st.components.v1.html(open("chord_network.html", "r").read(), height=600)
+st.components.v1.html(open("chord_network.html", "r").read(), height=1000)
 
 # Clean up
 #if os.path.exists("chord_network.html"):
